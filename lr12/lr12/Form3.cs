@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.EntityFrameworkCore;
 
 namespace lr12
 {
@@ -14,6 +15,7 @@ namespace lr12
     {
         private readonly AppDbContext _context;
         private readonly User _user;
+        public Form1 form1;
 
         public Form3(AppDbContext context, User user)
         {
@@ -22,14 +24,12 @@ namespace lr12
             _user = user;
 
             int userId = _user.Id;
-            _user = _context.User
-                 .Include(u => u.Task)
-                 .First(u => u.Id == userId);
+            _user = _context.User.Include(u => u.Task).First(u => u.Id == userId);
 
-            _user.Task = _context.Task.Where(t => t.UserId == _user.Id).ToList();
+            /*_user.Task = _context.Task.Where(t => t.UserId == _user.Id).ToList();*/
 
 
-            Text = $"Библиотека пользователя {_user.Name}";
+            Text = $"Задачи пользователя {_user.Name}";
 
             dataGridView1.AutoGenerateColumns = true;
             dataGridView1.DataSource = _user.Task;
@@ -38,11 +38,11 @@ namespace lr12
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var form3 = new Form3(_context, _user);
-            if (form3.ShowDialog() == DialogResult.OK)
+            var form4 = new Form4(_context, _user);
+            if (form4.ShowDialog() == DialogResult.OK)
             {
-                _user.Task.Add(form3.Task);
-                _context.SaveChanges();
+/*                _user.Task.Add(form4.Task);
+                _context.SaveChanges();*/
 
                 dataGridView1.DataSource = null;
                 dataGridView1.DataSource = _user.Task;
@@ -53,13 +53,33 @@ namespace lr12
         private void button2_Click(object sender, EventArgs e)
         {
             var selectedRow = dataGridView1.SelectedRows[0];
-            var task = (Book)selectedRow.DataBoundItem;
-            _user.Books.Remove(task);
+            var task = (Task)selectedRow.DataBoundItem;
+            _user.Task.Remove(task);
             _context.SaveChanges();
 
-            BooksDataGridView.DataSource = null;
-            BooksDataGridView.DataSource = _user.Books;
+            dataGridView1.DataSource = null;
+            dataGridView1.DataSource = _user.Task;
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var selectedRow = dataGridView1.SelectedRows[0];
+            var task = (Task)selectedRow.DataBoundItem;
+            if (task.Ststus == false)
+                task.Ststus = true;
+            else
+                task.Ststus = false;
+            _context.SaveChanges();
+
+            dataGridView1.DataSource = null;
+            dataGridView1.DataSource = _user.Task;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            form1.Show();
         }
     }
 }
