@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lr12
 {
-    public class Tasks
+    public class Task
     {
         public int ID { get; set; }
         public string Name { get; set; }

@@ -12,10 +12,10 @@ namespace lr12
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public List<Tasks> Tasks { get; set; }
+        public List<Task> Task { get; set; }
         public User()
         {
-            Tasks = new List<Tasks>();
+            Task = new List<Task>();
         }
     }
 
