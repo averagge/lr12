@@ -9,7 +9,7 @@ namespace lr12
 {
     public class AppDbContext : DbContext
     {
-        private const string ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=LibraryDb;Integrated Security=True;";
+        private const string ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=TasksDb;Integrated Security=True;";
 
         public DbSet<User> User { get; set; }
         public DbSet<Task> Task { get; set; }
